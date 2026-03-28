@@ -1,22 +1,15 @@
-from contextlib import asynccontextmanager
 from typing import Annotated, Literal
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from sqlmodel import Session, select
+from sqlmodel import Session
 
-from database import create_db_and_tables, get_session
+from database import get_session
 from game import GameRecord, GameState, MinesweeperGame
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    create_db_and_tables()
-    yield
-
-
-app = FastAPI(title="Minesweeper API", lifespan=lifespan)
+app = FastAPI(title="Minesweeper API")
 
 app.add_middleware(
     CORSMiddleware,
